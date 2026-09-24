@@ -73,7 +73,7 @@ export default function GameOver({
         </p>
 
         <div className="flex flex-col gap-2">
-          {guesses.map((guess, rowIndex) => (
+          {guesses.map((_, rowIndex) => (
             <div key={rowIndex} className="flex items-center gap-3 justify-center">
               <div className="flex gap-0.5">
                 {trueResults[rowIndex].map((letter, i) => (
