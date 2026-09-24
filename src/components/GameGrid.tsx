@@ -45,12 +45,12 @@ export default function GameGrid({
                   <div
                     key={colIndex}
                     onClick={isSubmitted ? () => onTileClick(rowIndex, colIndex) : undefined}
-                    className={`w-12 h-12 border-2 flex items-center justify-center text-lg font-bold uppercase transition-colors ${
+                    className={`w-12 h-12 rounded-lg flex items-center justify-center text-lg font-bold uppercase transition-colors ${
                       userColor
                         ? STATUS_COLORS[userColor]
                         : hasLetter
-                          ? "border-gray-500"
-                          : "border-gray-300"
+                          ? "bg-gray-200 text-gray-800"
+                          : "bg-gray-100"
                     } ${isSubmitted ? "cursor-pointer" : ""}`}
                   >
                     {letter}
