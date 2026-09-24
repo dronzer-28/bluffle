@@ -9,6 +9,8 @@ interface GameGridProps {
   results: GuessResult[];
   userColors: (LetterStatus | null)[][];
   onTileClick: (rowIndex: number, colIndex: number) => void;
+  gameOver: boolean;
+  trueStatuses: LetterStatus[][];
 }
 
 const STATUS_COLORS: Record<LetterStatus, string> = {
@@ -23,6 +25,8 @@ export default function GameGrid({
   results,
   userColors,
   onTileClick,
+  gameOver,
+  trueStatuses,
 }: GameGridProps) {
   return (
     <div className="flex flex-col gap-1.5 items-center py-4">
@@ -39,19 +43,21 @@ export default function GameGrid({
               {Array.from({ length: WORD_LENGTH }).map((_, colIndex) => {
                 const letter = word[colIndex] ?? "";
                 const hasLetter = letter !== "";
-                const userColor = isSubmitted ? userColors[rowIndex]?.[colIndex] : undefined;
+                const tileColor = gameOver && isSubmitted
+                  ? trueStatuses[rowIndex]?.[colIndex]
+                  : isSubmitted ? userColors[rowIndex]?.[colIndex] : undefined;
 
                 return (
                   <div
                     key={colIndex}
-                    onClick={isSubmitted ? () => onTileClick(rowIndex, colIndex) : undefined}
+                    onClick={isSubmitted && !gameOver ? () => onTileClick(rowIndex, colIndex) : undefined}
                     className={`w-12 h-12 rounded-lg flex items-center justify-center text-lg font-bold uppercase transition-colors ${
-                      userColor
-                        ? STATUS_COLORS[userColor]
+                      tileColor
+                        ? STATUS_COLORS[tileColor]
                         : hasLetter
                           ? "bg-gray-200 text-gray-800"
                           : "bg-gray-100"
-                    } ${isSubmitted ? "cursor-pointer" : ""}`}
+                    } ${isSubmitted && !gameOver ? "cursor-pointer" : ""}`}
                   >
                     {letter}
                   </div>

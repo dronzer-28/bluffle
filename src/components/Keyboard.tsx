@@ -6,22 +6,26 @@ const ROWS = [
 
 interface KeyboardProps {
   onKey: (key: string) => void;
+  usedLetters: Set<string>;
 }
 
-export default function Keyboard({ onKey }: KeyboardProps) {
+export default function Keyboard({ onKey, usedLetters }: KeyboardProps) {
   return (
     <div className="flex flex-col items-center gap-1.5 pb-4">
       {ROWS.map((row, i) => (
         <div key={i} className="flex gap-1">
           {row.map((key) => {
             const isWide = key === "Enter" || key === "Backspace";
+            const used = usedLetters.has(key);
             return (
               <button
                 key={key}
                 onClick={() => onKey(key)}
                 className={`${
                   isWide ? "px-3 text-xs" : "w-9"
-                } h-12 rounded bg-gray-200 font-semibold text-sm uppercase flex items-center justify-center active:bg-gray-300 select-none`}
+                } h-12 rounded font-semibold text-sm uppercase flex items-center justify-center active:bg-gray-300 select-none ${
+                  used ? "bg-gray-400 text-white" : "bg-gray-200"
+                }`}
               >
                 {key === "Backspace" ? "⌫" : key}
               </button>

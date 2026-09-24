@@ -103,6 +103,14 @@ function App() {
   }, [guesses, userColors, gameOver]);  
   const won = guesses.length > 0 && guesses[guesses.length - 1] === answer;
 
+  const usedLetters = useMemo(() => {
+    const set = new Set<string>();
+    for (const guess of guesses) {
+      for (const char of guess) set.add(char);
+    }
+    return set;
+  }, [guesses]);
+
   const trueResults = useMemo(
     () =>
       guesses.map((g) => {
@@ -126,6 +134,8 @@ function App() {
         results={results}
         userColors={userColors}
         onTileClick={handleTileClick}
+        gameOver={gameOver}
+        trueStatuses={trueResults.map((row) => row.map((l) => l.status))}
       />
       {showModal && (
         <GameOver
@@ -142,7 +152,7 @@ function App() {
         <p className="text-center text-sm text-gray-400 mb-2">
           Guess {guesses.length} / {MAX_GUESSES}
         </p>
-        <Keyboard onKey={handleKey} />
+        <Keyboard onKey={handleKey} usedLetters={usedLetters} />
       </div>
     </div>
   );
