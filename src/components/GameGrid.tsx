@@ -37,9 +37,9 @@ export default function GameGrid({
         const result = results[rowIndex];
 
         return (
-          <div key={rowIndex} className="flex items-center gap-4">
+          <div key={rowIndex} className="flex items-center gap-2 sm:gap-4 px-2">
 
-            <div className="flex gap-1">
+            <div className="flex gap-0.5 sm:gap-1">
               {Array.from({ length: WORD_LENGTH }).map((_, colIndex) => {
                 const letter = word[colIndex] ?? "";
                 const hasLetter = letter !== "";
@@ -51,12 +51,12 @@ export default function GameGrid({
                   <div
                     key={colIndex}
                     onClick={isSubmitted && !gameOver ? () => onTileClick(rowIndex, colIndex) : undefined}
-                    className={`w-12 h-12 rounded-lg flex items-center justify-center text-lg font-bold uppercase transition-colors ${
+                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-base sm:text-lg font-bold uppercase transition-colors ${
                       tileColor
                         ? STATUS_COLORS[tileColor]
                         : hasLetter
-                          ? "bg-gray-200 text-gray-800"
-                          : "bg-gray-100"
+                          ? "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"
+                          : "bg-gray-100 dark:bg-gray-800"
                     } ${isSubmitted && !gameOver ? "cursor-pointer" : ""}`}
                   >
                     {letter}
@@ -65,22 +65,22 @@ export default function GameGrid({
               })}
             </div>
 
-            <div className="flex items-center gap-3 border border-gray-200 rounded-lg px-3 py-1.5">
-              <span className="flex items-center gap-1">
-                <span className="w-3.5 h-3.5 rounded-full bg-green-500" />
-                <span className="text-sm font-medium text-gray-400">
+            <div className="flex items-center gap-1.5 sm:gap-3 border border-gray-200 dark:border-gray-700 rounded-lg px-2 sm:px-3 py-1">
+              <span className="flex items-center gap-0.5">
+                <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-green-500" />
+                <span className="text-xs sm:text-sm font-medium text-gray-400 dark:text-gray-500">
                   {isSubmitted ? result.counts.green : "-"}
                 </span>
               </span>
-              <span className="flex items-center gap-1">
-                <span className="w-3.5 h-3.5 rounded-full bg-yellow-500" />
-                <span className="text-sm font-medium text-gray-400">
+              <span className="flex items-center gap-0.5">
+                <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-yellow-500" />
+                <span className="text-xs sm:text-sm font-medium text-gray-400 dark:text-gray-500">
                   {isSubmitted ? result.counts.yellow : "-"}
                 </span>
               </span>
-              <span className="flex items-center gap-1">
-                <span className="w-3.5 h-3.5 rounded-full bg-red-500" />
-                <span className="text-sm font-medium text-gray-400">
+              <span className="flex items-center gap-0.5">
+                <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-red-500" />
+                <span className="text-xs sm:text-sm font-medium text-gray-400 dark:text-gray-500">
                   {isSubmitted ? result.counts.red : "-"}
                 </span>
               </span>

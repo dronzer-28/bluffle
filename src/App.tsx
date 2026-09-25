@@ -32,6 +32,20 @@ function App() {
     const saved = loadGameState();
     return saved ? saved.gameOver : false;
   });
+  const [dark, setDark] = useState(() => {
+    const saved = localStorage.getItem("bluffle_theme");
+    if (saved) return saved === "dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  });
+
+  const toggleDark = useCallback(() => {
+    setDark((prev) => {
+      const next = !prev;
+      document.documentElement.classList.toggle("dark", next);
+      localStorage.setItem("bluffle_theme", next ? "dark" : "light");
+      return next;
+    });
+  }, []);
 
   const results: GuessResult[] = useMemo(
     () => guesses.map((g, i) => evaluateGuess(g, answer, bluffColor, i)),
@@ -45,7 +59,12 @@ function App() {
       if (key === "Enter") {
         if (currentGuess.length < WORD_LENGTH) return;
         if (!isValidWord(currentGuess)) {
-          setToast("Not in word list");
+          setToast("Invalid word!");
+          setTimeout(() => setToast(""), 1500);
+          return;
+        }
+        if (guesses.includes(currentGuess)) {
+          setToast("Already guessed!");
           setTimeout(() => setToast(""), 1500);
           return;
         }
@@ -87,6 +106,9 @@ function App() {
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key === "Enter" || e.key === "Backspace" || /^[a-zA-Z]$/.test(e.key)) {
+        e.preventDefault();
+      }
       handleKey(e.key);
     };
     window.addEventListener("keydown", onKeyDown);
@@ -121,13 +143,13 @@ function App() {
   );
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center max-w-lg mx-auto relative">
+    <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col items-center max-w-lg mx-auto relative">
       {toast && (
-        <div className="absolute top-16 bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-semibold z-10">
+        <div className="absolute top-16 bg-gray-800 dark:bg-gray-200 text-white dark:text-gray-900 px-4 py-2 rounded-lg text-sm font-semibold z-10">
           {toast}
         </div>
       )}
-      <Header />
+      <Header dark={dark} onToggleDark={toggleDark} />
       <GameGrid
         guesses={guesses}
         currentGuess={currentGuess}
@@ -148,8 +170,8 @@ function App() {
           onClose={() => setShowModal(false)}
         />
       )}
-      <div className="mt-auto w-full px-2">
-        <p className="text-center text-sm text-gray-400 mb-2">
+      <div className="mt-6 sm:mt-8 w-full px-2">
+        <p className="text-center text-sm text-gray-400 dark:text-gray-500 mb-2">
           Guess {guesses.length} / {MAX_GUESSES}
         </p>
         <Keyboard onKey={handleKey} usedLetters={usedLetters} />

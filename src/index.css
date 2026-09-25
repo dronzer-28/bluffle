@@ -1,1 +1,20 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+html, body {
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  background-color: #fff;
+}
+
+html.dark {
+  background-color: #111827;
+}
+
+body {
+  touch-action: manipulation;
+}

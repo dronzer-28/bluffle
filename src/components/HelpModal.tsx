@@ -5,17 +5,17 @@ interface HelpModalProps {
 export default function HelpModal({ onClose }: HelpModalProps) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-20 p-4">
-      <div className="bg-white rounded-2xl p-6 max-w-sm w-full max-h-[90vh] overflow-y-auto relative">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-sm w-full max-h-[90vh] overflow-y-auto relative">
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 text-lg"
+          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 text-lg"
         >
           x
         </button>
 
-        <h2 className="text-xl font-bold text-center mb-4">How to Play</h2>
+        <h2 className="text-xl font-bold text-center mb-4 text-gray-900 dark:text-white">How to Play</h2>
 
-        <div className="flex flex-col gap-3 text-sm text-gray-700">
+        <div className="flex flex-col gap-3 text-sm text-gray-700 dark:text-gray-300">
           <p>
             Guess the 5-letter word in <strong>9 tries</strong>.
           </p>
@@ -36,7 +36,7 @@ export default function HelpModal({ onClose }: HelpModalProps) {
             (not in the word).
           </p>
 
-          <div className="bg-gray-50 rounded-lg p-3">
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
             <p className="font-semibold mb-1">The Bluff</p>
             <p>
               One of the three colors is <strong>lying</strong>. Its count is always
