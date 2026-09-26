@@ -28,6 +28,7 @@ function App() {
     return saved ? saved.userColors : [];
   });
   const [toast, setToast] = useState("");
+  const [shakeRow, setShakeRow] = useState(false);
   const [showModal, setShowModal] = useState(() => {
     const saved = loadGameState();
     return saved ? saved.gameOver : false;
@@ -60,12 +61,14 @@ function App() {
         if (currentGuess.length < WORD_LENGTH) return;
         if (!isValidWord(currentGuess)) {
           setToast("Invalid word!");
-          setTimeout(() => setToast(""), 1500);
+          setShakeRow(true);
+          setTimeout(() => { setToast(""); setShakeRow(false); }, 1500);
           return;
         }
         if (guesses.includes(currentGuess)) {
           setToast("Already guessed!");
-          setTimeout(() => setToast(""), 1500);
+          setShakeRow(true);
+          setTimeout(() => { setToast(""); setShakeRow(false); }, 1500);
           return;
         }
         const newGuesses = [...guesses, currentGuess];
@@ -158,6 +161,7 @@ function App() {
         onTileClick={handleTileClick}
         gameOver={gameOver}
         trueStatuses={trueResults.map((row) => row.map((l) => l.status))}
+        shakeCurrentRow={shakeRow}
       />
       {showModal && (
         <GameOver
